@@ -8,15 +8,18 @@ public class InputController : MonoBehaviour
 {
     private bool turnLeft, turnRight, reverse, accelerate;
 
+
+
+
     private void FixedUpdate() {
         if(accelerate)
-            CarController.Instance.Accelerate();
-        else if(reverse)
-            CarController.Instance.Reverse();
-        else if(turnLeft)
-            CarController.Instance.TurnLeft();
-        else if(turnRight)
-            CarController.Instance.TurnRight();
+            CarController.Accelerate();
+        if(reverse)
+            CarController.Reverse();
+        if(turnLeft)
+            CarController.TurnLeft();
+        if(turnRight)
+            CarController.TurnRight();
     }
 
     public void OnTurnLeft(InputValue inputValue) => turnLeft = inputValue.isPressed;
