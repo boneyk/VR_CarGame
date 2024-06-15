@@ -13,13 +13,13 @@ public class InputController : MonoBehaviour
 
     private void FixedUpdate() {
         if(accelerate)
-            CarController.Accelerate();
+            CarController.Instance.Accelerate();
         if(reverse)
-            CarController.Reverse();
+            CarController.Instance.Reverse();
         if(turnLeft)
-            CarController.TurnLeft();
+            CarController.Instance.TurnLeft();
         if(turnRight)
-            CarController.TurnRight();
+            CarController.Instance.TurnRight();
     }
 
     public void OnTurnLeft(InputValue inputValue) => turnLeft = inputValue.isPressed;
