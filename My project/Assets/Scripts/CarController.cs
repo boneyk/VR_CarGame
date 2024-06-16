@@ -17,7 +17,7 @@ public class CarController : Singleton<CarController>
     private float minSpeedBeforeIdle = 0.2f;
 
     [SerializeField]
-    private Rigidbody carRigidBody = null;
+    private Rigidbody carRigidBody;
 
     private CarWheel[] wheels;
 
@@ -33,10 +33,12 @@ public class CarController : Singleton<CarController>
     void Awake()
     {
         wheels = GetComponentsInChildren<CarWheel>();
+        carRigidBody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
+        // Когда машинка не двигается, колеса останавливаются
         if (carRigidBody.velocity.magnitude <= minSpeedBeforeIdle)
         {
             AddWheelsSpeed(0);
@@ -45,6 +47,7 @@ public class CarController : Singleton<CarController>
 
     public void Accelerate()
     {
+        // 
         carRigidBody.AddForce(transform.forward * speed, ForceMode.Acceleration);
         AddWheelsSpeed(speed);
     }
@@ -57,14 +60,22 @@ public class CarController : Singleton<CarController>
 
     public void TurnLeft()
     {
-        if(canApplyTorque())
+        if(canApplyTorque()){
             carRigidBody.AddTorque(transform.up * -torque);
+            Debug.Log("Turning the car left");
+        }else{
+             Debug.Log("the car is not turning left");
+        }
     }
 
     public void TurnRight()
     {
-        if(canApplyTorque())
+        if(canApplyTorque()){
             carRigidBody.AddTorque(transform.up * torque);
+            Debug.Log("Turning the car right");
+        }else{
+             Debug.Log("the car is not turning right");
+        }
     }
 
     void AddWheelsSpeed(float speed)
@@ -78,6 +89,7 @@ public class CarController : Singleton<CarController>
     bool canApplyTorque()
     {
         Vector3 velocity = carRigidBody.velocity;
+        Debug.Log(carRigidBody.velocity);
         return Mathf.Abs(velocity.x) >= minSpeedBeforeTorque || Mathf.Abs(velocity.z) >= minSpeedBeforeTorque;
     }
 }

@@ -8,9 +8,6 @@ public class InputController : MonoBehaviour
 {
     private bool turnLeft, turnRight, reverse, accelerate;
 
-
-
-
     private void FixedUpdate() {
         if(accelerate)
             CarController.Instance.Accelerate();
