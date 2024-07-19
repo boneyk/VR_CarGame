@@ -1,22 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using DilmerGames.Core.Singletons;
 using UnityEngine.InputSystem;
 
-public class InputController : MonoBehaviour
+public class InputController : Singleton<InputController>
 {
     private bool turnLeft, turnRight, reverse, accelerate;
 
+    private CarController carController;
+
+    public void Bind(CarController carController){
+        this.carController = carController;
+    }
     private void FixedUpdate() {
         if(accelerate)
-            CarController.Instance.Accelerate();
+            carController.Accelerate();
         if(reverse)
-            CarController.Instance.Reverse();
+           carController.Reverse();
         if(turnLeft)
-            CarController.Instance.TurnLeft();
+            carController.TurnLeft();
         if(turnRight)
-            CarController.Instance.TurnRight();
+            carController.TurnRight();
     }
 
     public void OnTurnLeft(InputValue inputValue) => turnLeft = inputValue.isPressed;
