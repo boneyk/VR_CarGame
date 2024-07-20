@@ -24,7 +24,10 @@ public class Gameanager : MonoBehaviour
 
         bool isOverUI = touch.screenPosition.IsPointOverUIObject();
 
-        if(isOverUI) return;
+        if(isOverUI) {
+            Debug.Log("UI is touched");
+            return;
+            }
 
         if(touch.phase == UnityEngine.InputSystem.TouchPhase.Began){
             var ray = arCamera.ScreenPointToRay(touch.screenPosition);
