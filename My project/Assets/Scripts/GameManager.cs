@@ -3,42 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-public class Gameanager : MonoBehaviour
+public class GameManager : MonoBehaviour // Исправлено название класса
 {
-   [SerializeField]
-   private GameObject carPrefab;
+    [SerializeField]
+    private GameObject carPrefab;
 
-   [SerializeField]
-   private Camera arCamera;
+    [SerializeField]
+    private Camera arCamera;
 
-   private GameObject carController;
+    private GameObject carController;
 
-   private void Awake(){
-    EnhancedTouchSupport.Enable();
-   }
+    private Rect resetButton; // Изменено на поле для Rect
 
-   private void Update(){
-    var activeTouches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
-    if(activeTouches.Count > 0){
-        var touch = activeTouches[0];
+    private void Awake()
+    {
+        EnhancedTouchSupport.Enable();
+        // Присваиваем значение resetButton в Awake
+        GameObject resetButtonObject = GameObject.FindGameObjectWithTag("ResetButton");
+        if (resetButtonObject != null)
+        {
+            RectTransform rectTransform = resetButtonObject.GetComponent<RectTransform>();
+            resetButton = new Rect(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y, rectTransform.rect.width, rectTransform.rect.height);
+        }
+        else
+        {
+            Debug.LogError("ResetButton с тегом не найден!");
+        }
+    }
 
-        bool isOverUI = touch.screenPosition.IsPointOverUIObject();
+    private void Update()
+    {
+        var activeTouches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+        if (activeTouches.Count > 0)
+        {
+            var touch = activeTouches[0];
 
-        if(isOverUI) {
-            Debug.Log("UI is touched");
-            return;
+            bool isOverUI = touch.screenPosition.IsPointOverUIObject();
+
+            if (isOverUI)
+            {
+                if (resetButton.Contains(touch.screenPosition))
+                {
+                    OnResetButtonPressed();
+                }
+                Debug.Log("UI is touched");
+                return;
             }
 
-        if(touch.phase == UnityEngine.InputSystem.TouchPhase.Began){
-            var ray = arCamera.ScreenPointToRay(touch.screenPosition);
-            var hasHit = Physics.Raycast(ray, out var hit, float.PositiveInfinity);
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+            {
+                var ray = arCamera.ScreenPointToRay(touch.screenPosition);
+                var hasHit = Physics.Raycast(ray, out var hit, float.PositiveInfinity);
 
-            if(hasHit && carController == null){
-                carController = Instantiate(carPrefab, hit.point, Quaternion.identity);
-                InputController.Instance.Bind(carController.GetComponent<CarController>());
-
+                if (hasHit && carController == null)
+                {
+                    carController = Instantiate(carPrefab, hit.point, Quaternion.identity);
+                    InputController.Instance.Bind(carController.GetComponent<CarController>());
+                }
             }
         }
     }
-   }
+
+    public void OnResetButtonPressed()
+    {
+        Debug.Log("Кнопка Pause нажата!");
+       
+    }
 }

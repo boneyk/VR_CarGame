@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Coin
   - coins_text
+  - ResetButton
+  - PausePanel
+  - Congrats
   layers:
   - Default
   - TransparentFX
