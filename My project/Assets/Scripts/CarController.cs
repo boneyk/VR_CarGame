@@ -59,22 +59,25 @@ public class CarController : MonoBehaviour
 
     public void TurnLeft()
     {
-        if(canApplyTorque()){
+        // if(canApplyTorque()){
             carRigidBody.AddTorque(transform.up * -torque);
+            // carRigidBody.AddForce(transform.forward * speed, ForceMode.Acceleration);;
+
             Debug.Log("Turning the car left");
-        }else{
-             Debug.Log("the car is not turning left");
-        }
+        // }else{
+        //      Debug.Log("the car is not turning left");
+        // }
     }
 
     public void TurnRight()
     {
-        if(canApplyTorque()){
+        // if(canApplyTorque()){
             carRigidBody.AddTorque(transform.up * torque);
+            // carRigidBody.AddForce(transform.forward * speed, ForceMode.Acceleration);;
             Debug.Log("Turning the car right");
-        }else{
-             Debug.Log("the car is not turning right");
-        }
+        // }else{
+            //  Debug.Log("the car is not turning right");
+        // }
     }
 
     void AddWheelsSpeed(float speed)
